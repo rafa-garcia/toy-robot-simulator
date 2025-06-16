@@ -8,7 +8,10 @@ require_relative 'lib/logger'
 
 # Main entry point for the Toy Robot Simulator
 class ToyRobotSimulator
-  def self.run(input = $stdin, table_width = 5, table_height = 5, log_level: :warn)
+  DEFAULT_TABLE_WIDTH = 5
+  DEFAULT_TABLE_HEIGHT = 5
+
+  def self.run(input = $stdin, table_width = DEFAULT_TABLE_WIDTH, table_height = DEFAULT_TABLE_HEIGHT, log_level: :warn)
     setup = create_components(table_width, table_height, log_level)
 
     input.each_line do |line|

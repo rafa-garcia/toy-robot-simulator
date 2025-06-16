@@ -24,7 +24,7 @@ class Robot
   def report
     return unless placed?
 
-    "#{@x},#{@y},#{@direction}"
+    [@x, @y, @direction].join(',')
   end
 
   def next_position

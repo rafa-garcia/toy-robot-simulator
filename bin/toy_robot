@@ -13,21 +13,44 @@ HELP = <<~TEXT
   Press Ctrl+C to quit
 TEXT
 
-options = { log_level: :warn }
+options = {
+  log_level: :warn,
+  width: ToyRobotSimulator::DEFAULT_TABLE_WIDTH,
+  height: ToyRobotSimulator::DEFAULT_TABLE_HEIGHT
+}
 OptionParser.new do |opts|
   opts.banner = "Usage: toy_robot [options] [file]\n\n#{HELP}"
   opts.on('-v', '--verbose', 'Debug logging') { options[:log_level] = :debug }
   opts.on('-q', '--quiet', 'Error only') { options[:log_level] = :error }
+  opts.on('-w', '--width WIDTH', Integer, 'Table width (default: 5)') { |w| options[:width] = w }
+  opts.on('-g', '--height HEIGHT', Integer, 'Table height (default: 5)') { |h| options[:height] = h }
   opts.on('-h', '--help', 'Show help') do
     puts opts
     exit
   end
 end.parse!
 
-input = ARGV.first ? File.open(ARGV.first) : $stdin
+input = if ARGV.first
+          begin
+            File.open(ARGV.first)
+          rescue Errno::ENOENT
+            warn "Error: File not found - #{ARGV.first}"
+            exit 1
+          rescue StandardError => e
+            warn "Error opening file: #{e.message}"
+            exit 1
+          end
+        else
+          $stdin
+        end
+
 if input == $stdin
   puts HELP
   print '> '
 end
 
-ToyRobotSimulator.run(input, log_level: options[:log_level])
+begin
+  ToyRobotSimulator.run(input, options[:width], options[:height], log_level: options[:log_level])
+ensure
+  input.close if input != $stdin && !input.closed?
+end
