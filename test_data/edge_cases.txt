@@ -1,0 +1,20 @@
+# Invalid commands before PLACE should be ignored
+MOVE
+LEFT
+RIGHT
+REPORT
+PLACE 2,2,NORTH
+REPORT
+
+# Try to move off the table - should be prevented
+PLACE 4,4,NORTH
+MOVE
+REPORT
+PLACE 4,4,EAST
+MOVE
+REPORT
+
+# Multiple PLACE commands
+PLACE 0,0,NORTH
+PLACE 1,1,SOUTH
+REPORT
