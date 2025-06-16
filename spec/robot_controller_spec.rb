@@ -3,6 +3,7 @@
 require_relative '../lib/robot_controller'
 require_relative '../lib/robot'
 require_relative '../lib/table'
+require_relative '../lib/logger'
 
 RSpec.describe RobotController do
   let(:robot) { Robot.new }
@@ -84,6 +85,51 @@ RSpec.describe RobotController do
         result = controller.execute({ type: :report })
         expect(result).to be_nil
       end
+    end
+  end
+
+  describe 'logger dependency injection' do
+    let(:logger) { instance_double(Logger) }
+
+    it 'works without logger' do
+      controller = described_class.new(robot, table) # No logger
+
+      expect { controller.execute({ type: :place, x: 1, y: 2, direction: :NORTH }) }.not_to raise_error
+      expect { controller.execute({ type: :move }) }.not_to raise_error
+    end
+
+    it 'logs debug and info messages when placing robot' do
+      controller = described_class.new(robot, table, logger: logger)
+
+      expect(logger).to receive(:debug).with('Executing: place')
+      expect(logger).to receive(:info).with('Robot placed at 1,2,NORTH')
+      controller.execute({ type: :place, x: 1, y: 2, direction: :NORTH })
+    end
+
+    it 'logs warning when move is blocked' do
+      robot.place(0, 0, :SOUTH)
+      controller = described_class.new(robot, table, logger: logger)
+
+      expect(logger).to receive(:debug).with('Executing: move')
+      expect(logger).to receive(:warn).with('Move blocked - would fall off table')
+      controller.execute({ type: :move })
+    end
+
+    it 'logs debug message when robot moves successfully' do
+      robot.place(1, 1, :NORTH)
+      controller = described_class.new(robot, table, logger: logger)
+
+      expect(logger).to receive(:debug).with('Executing: move')
+      expect(logger).to receive(:debug).with('Robot moved to 1,2')
+      controller.execute({ type: :move })
+    end
+
+    it 'logs debug message when executing turn commands' do
+      robot.place(1, 1, :NORTH)
+      controller = described_class.new(robot, table, logger: logger)
+
+      expect(logger).to receive(:debug).with('Executing: left')
+      controller.execute({ type: :left })
     end
   end
 end

@@ -2,7 +2,7 @@
 
 # Represents the toy robot with position and direction
 class Robot
-  DIRECTIONS = %i[NORTH EAST SOUTH WEST]
+  DIRECTIONS = %i[NORTH EAST SOUTH WEST].freeze
   # Movement deltas [x, y] for NORTH, EAST, SOUTH, WEST respectively
   POSITION_DELTAS = [[0, 1], [1, 0], [0, -1], [-1, 0]].freeze
 

@@ -6,7 +6,7 @@ class Table
 
   def initialize(width, height)
     raise ArgumentError unless [width, height].all? { |d| d.is_a?(Integer) && d.positive? }
-  
+
     @width = width
     @height = height
   end
