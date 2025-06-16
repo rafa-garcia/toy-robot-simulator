@@ -32,6 +32,21 @@ RSpec.describe Robot do
       expect(robot.y).to eq(3)
       expect(robot.direction).to eq(:SOUTH)
     end
+
+    it 'rejects non-integer coordinates' do
+      robot.place(1.5, 2, :NORTH)
+      expect(robot).not_to be_placed
+    end
+
+    it 'rejects negative coordinates' do
+      robot.place(-1, 2, :NORTH)
+      expect(robot).not_to be_placed
+    end
+
+    it 'rejects string coordinates' do
+      robot.place('1', '2', :NORTH)
+      expect(robot).not_to be_placed
+    end
   end
 
   describe '#report' do

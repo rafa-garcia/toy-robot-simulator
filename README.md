@@ -19,12 +19,29 @@ The application simulates a toy robot moving on a configurable square tabletop (
 ### Command line
 
 ```bash
-# Run with standard input
+# Run with standard input (interactive mode)
 ./bin/toy_robot
 
 # Run with a file
-./bin/toy_robot < test_data/example1.txt
+./bin/toy_robot test_data/example1.txt
+
+# Configure table dimensions
+./bin/toy_robot --width 10 --height 8
+
+# Enable debug logging
+./bin/toy_robot --verbose
+
+# Available options
+./bin/toy_robot --help
 ```
+
+### CLI Options
+
+- `-w, --width WIDTH` - Set table width (default: 5)
+- `-g, --height HEIGHT` - Set table height (default: 5)
+- `-v, --verbose` - Enable debug logging
+- `-q, --quiet` - Error logging only
+- `-h, --help` - Show help message
 
 ### Examples
 
@@ -85,10 +102,12 @@ The application follows SOLID principles with clear separation of concerns:
 ### Classes
 
 - **Table** (`lib/table.rb`) - Handles table boundaries and position validation
-- **Robot** (`lib/robot.rb`) - Encapsulates robot state and movements
+- **Robot** (`lib/robot.rb`) - Encapsulates robot state and movements with input validation
 - **RobotController** (`lib/robot_controller.rb`) - Controls robot movement within table constraints
 - **CommandParser** (`lib/command_parser.rb`) - Parses string commands into structured data
-- **ToyRobotSimulator** (`toy_robot_simulator.rb`) - Main application entry point
+- **SimulatorComponents** (`toy_robot_simulator.rb`) - Type-safe container for simulator components
+- **ConsoleUI** (`toy_robot_simulator.rb`) - Handles console output and user interface
+- **ToyRobotSimulator** (`toy_robot_simulator.rb`) - Main application entry point with CLI support
 
 ### SOLID principles applied
 
@@ -109,12 +128,10 @@ The application follows SOLID principles with clear separation of concerns:
 
 ## What could be done given more time
 
-- **User Experience**: Clear prompts and help text to guide users on available commands
-- **CLI Configuration**: Add command-line options for table size (e.g., `--size 10x10`)
-- **Validation**: More robust input validation and error messages
-- **Logging**: Add structured logging for debugging
-- **UI**: Interactive CLI with arrow keys and visual table display
+- **Enhanced User Experience**: Interactive CLI with arrow keys and visual table display
+- **Advanced Validation**: More detailed error messages for specific validation failures
 - **Extensions**: Support for multiple robots, obstacles, or different movement patterns
-- **Persistence**: Save/load robot state
-- **Performance**: Optimize for handling large command sequences
+- **Persistence**: Save/load robot state to files
+- **Performance**: Optimize for handling very large command sequences
 - **Metrics**: Performance monitoring and analytics
+- **Testing**: Property-based testing and fuzz testing for edge cases

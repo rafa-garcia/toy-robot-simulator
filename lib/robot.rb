@@ -9,8 +9,7 @@ class Robot
   attr_reader :x, :y, :direction
 
   def place(x_pos, y_pos, direction)
-    return if x_pos.nil? || y_pos.nil?
-    return unless DIRECTIONS.include?(direction)
+    return unless [x_pos, y_pos].all? { |c| c.is_a?(Integer) && c >= 0 } && DIRECTIONS.include?(direction)
 
     @x = x_pos
     @y = y_pos
@@ -42,9 +41,10 @@ class Robot
   def turn(direction)
     return unless placed?
 
-    offset = { left: -1, right: 1 }[direction]
-    # Rotate the directions array to simulate turning, then get new direction at current index
-    @direction = DIRECTIONS.rotate(offset)[current_direction_index]
+    # Calculate new direction using modular arithmetic: left = -1, right = +1
+    offset = direction == :left ? -1 : 1
+    new_index = (current_direction_index + offset) % DIRECTIONS.length
+    @direction = DIRECTIONS[new_index]
   end
 
   private

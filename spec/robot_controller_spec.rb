@@ -14,62 +14,69 @@ RSpec.describe RobotController do
     context 'with PLACE command' do
       it 'places robot on valid position' do
         command = { type: :place, x: 1, y: 2, direction: :NORTH }
-        controller.execute(command)
+        result = controller.execute(command)
 
+        expect(result).to be true
         expect(robot).to be_placed
         expect(robot.x).to eq(1)
         expect(robot.y).to eq(2)
         expect(robot.direction).to eq(:NORTH)
       end
 
-      it 'ignores placement on invalid position' do
+      it 'returns false for placement on invalid position' do
         command = { type: :place, x: 5, y: 5, direction: :NORTH }
-        controller.execute(command)
+        result = controller.execute(command)
 
+        expect(result).to be false
         expect(robot).not_to be_placed
       end
     end
 
     context 'with MOVE command' do
-      it 'moves robot when safe' do
+      it 'returns true when move is successful' do
         robot.place(1, 1, :NORTH)
-        controller.execute({ type: :move })
+        result = controller.execute({ type: :move })
 
+        expect(result).to be true
         expect(robot.x).to eq(1)
         expect(robot.y).to eq(2)
       end
 
-      it 'prevents robot from falling off table' do
+      it 'returns false when move would cause fall' do
         robot.place(0, 0, :SOUTH)
-        controller.execute({ type: :move })
+        result = controller.execute({ type: :move })
 
+        expect(result).to be false
         expect(robot.x).to eq(0)
         expect(robot.y).to eq(0)
       end
 
-      it 'prevents robot from falling off east edge' do
+      it 'returns false when move blocked on east edge' do
         robot.place(4, 0, :EAST)
-        controller.execute({ type: :move })
+        result = controller.execute({ type: :move })
 
+        expect(result).to be false
         expect(robot.x).to eq(4)
         expect(robot.y).to eq(0)
       end
     end
 
     context 'with LEFT command' do
-      it 'turns robot left' do
+      it 'returns true and turns robot left' do
         robot.place(0, 0, :NORTH)
-        controller.execute({ type: :left })
+        result = controller.execute({ type: :left })
 
+        expect(result).to be true
         expect(robot.direction).to eq(:WEST)
       end
     end
 
     context 'with RIGHT command' do
-      it 'turns robot right' do
+      it 'returns true and turns robot right' do
         robot.place(0, 0, :NORTH)
-        controller.execute({ type: :right })
+        result = controller.execute({ type: :right })
 
+        expect(result).to be true
         expect(robot.direction).to eq(:EAST)
       end
     end
