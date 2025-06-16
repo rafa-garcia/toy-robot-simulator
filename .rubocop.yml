@@ -1,0 +1,5 @@
+# RuboCop configuration
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
