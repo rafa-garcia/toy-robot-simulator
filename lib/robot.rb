@@ -1,0 +1,31 @@
+# frozen_string_literal: true
+
+# Represents the toy robot with position and direction
+class Robot
+  DIRECTIONS = %w[NORTH EAST SOUTH WEST].freeze
+
+  attr_reader :x, :y, :direction
+
+  def initialize
+    @placed = false
+  end
+
+  def place(x_pos, y_pos, direction)
+    return false unless DIRECTIONS.include?(direction)
+
+    @x = x_pos
+    @y = y_pos
+    @direction = direction
+    @placed = true
+  end
+
+  def placed?
+    @placed
+  end
+
+  def report
+    return unless placed?
+
+    "#{@x},#{@y},#{@direction}"
+  end
+end
