@@ -13,10 +13,10 @@ RSpec.describe Robot do
 
   describe '#place' do
     it 'places robot at valid position with valid direction' do
-      expect(robot.place(1, 2, 'NORTH')).to be true
+      expect(robot.place(1, 2, :NORTH)).to be true
       expect(robot.x).to eq(1)
       expect(robot.y).to eq(2)
-      expect(robot.direction).to eq('NORTH')
+      expect(robot.direction).to eq(:NORTH)
       expect(robot).to be_placed
     end
 
@@ -26,11 +26,11 @@ RSpec.describe Robot do
     end
 
     it 'allows re-placement' do
-      robot.place(1, 1, 'NORTH')
-      robot.place(2, 3, 'SOUTH')
+      robot.place(1, 1, :NORTH)
+      robot.place(2, 3, :SOUTH)
       expect(robot.x).to eq(2)
       expect(robot.y).to eq(3)
-      expect(robot.direction).to eq('SOUTH')
+      expect(robot.direction).to eq(:SOUTH)
     end
   end
 
@@ -40,7 +40,7 @@ RSpec.describe Robot do
     end
 
     it 'returns position and direction when placed' do
-      robot.place(3, 4, 'SOUTH')
+      robot.place(3, 4, :SOUTH)
       expect(robot.report).to eq('3,4,SOUTH')
     end
   end
@@ -52,31 +52,95 @@ RSpec.describe Robot do
 
     context 'when placed' do
       it 'moves north when facing north' do
-        robot.place(2, 2, 'NORTH')
+        robot.place(2, 2, :NORTH)
         robot.move
         expect(robot.y).to eq(3)
         expect(robot.x).to eq(2)
       end
 
       it 'moves south when facing south' do
-        robot.place(2, 2, 'SOUTH')
+        robot.place(2, 2, :SOUTH)
         robot.move
         expect(robot.y).to eq(1)
         expect(robot.x).to eq(2)
       end
 
       it 'moves east when facing east' do
-        robot.place(2, 2, 'EAST')
+        robot.place(2, 2, :EAST)
         robot.move
         expect(robot.x).to eq(3)
         expect(robot.y).to eq(2)
       end
 
       it 'moves west when facing west' do
-        robot.place(2, 2, 'WEST')
+        robot.place(2, 2, :WEST)
         robot.move
         expect(robot.x).to eq(1)
         expect(robot.y).to eq(2)
+      end
+    end
+  end
+
+  describe '#left' do
+    it 'ignores turn when not placed' do
+      expect { robot.left }.not_to(change { robot.direction })
+    end
+
+    context 'when placed' do
+      it 'turns from NORTH to WEST' do
+        robot.place(0, 0, :NORTH)
+        robot.left
+        expect(robot.direction).to eq(:WEST)
+      end
+
+      it 'turns from WEST to SOUTH' do
+        robot.place(0, 0, :WEST)
+        robot.left
+        expect(robot.direction).to eq(:SOUTH)
+      end
+
+      it 'turns from SOUTH to EAST' do
+        robot.place(0, 0, :SOUTH)
+        robot.left
+        expect(robot.direction).to eq(:EAST)
+      end
+
+      it 'turns from EAST to NORTH' do
+        robot.place(0, 0, :EAST)
+        robot.left
+        expect(robot.direction).to eq(:NORTH)
+      end
+    end
+  end
+
+  describe '#right' do
+    it 'ignores turn when not placed' do
+      expect { robot.right }.not_to(change { robot.direction })
+    end
+
+    context 'when placed' do
+      it 'turns from NORTH to EAST' do
+        robot.place(0, 0, :NORTH)
+        robot.right
+        expect(robot.direction).to eq(:EAST)
+      end
+
+      it 'turns from EAST to SOUTH' do
+        robot.place(0, 0, :EAST)
+        robot.right
+        expect(robot.direction).to eq(:SOUTH)
+      end
+
+      it 'turns from SOUTH to WEST' do
+        robot.place(0, 0, :SOUTH)
+        robot.right
+        expect(robot.direction).to eq(:WEST)
+      end
+
+      it 'turns from WEST to NORTH' do
+        robot.place(0, 0, :WEST)
+        robot.right
+        expect(robot.direction).to eq(:NORTH)
       end
     end
   end
