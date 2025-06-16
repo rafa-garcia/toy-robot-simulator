@@ -30,12 +30,16 @@ class Robot
     "#{@x},#{@y},#{@direction}"
   end
 
-  def move
+  def next_position
     return unless placed?
 
     dx, dy = POSITION_DELTAS[current_direction_index]
-    @x += dx
-    @y += dy
+    [@x + dx, @y + dy]
+  end
+
+  def move
+    new_position = next_position
+    @x, @y = new_position if new_position
   end
 
   def left
