@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'stringio'
-require_relative '../lib/toy_robot_simulator'
+require_relative '../toy_robot_simulator'
 
 RSpec.describe 'Integration Tests' do
   let(:output) { StringIO.new }

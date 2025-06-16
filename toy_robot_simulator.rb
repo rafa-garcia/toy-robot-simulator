@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative 'robot'
-require_relative 'table'
-require_relative 'command_parser'
-require_relative 'robot_controller'
+require_relative 'lib/robot'
+require_relative 'lib/table'
+require_relative 'lib/command_parser'
+require_relative 'lib/robot_controller'
 
 # Main entry point for the Toy Robot Simulator
 class ToyRobotSimulator
