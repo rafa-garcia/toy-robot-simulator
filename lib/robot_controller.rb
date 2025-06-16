@@ -11,8 +11,8 @@ class RobotController
     case command[:type]
     when :place then place_robot(command)
     when :move then move_robot
-    when :left then @robot.left
-    when :right then @robot.right
+    when :left then @robot.turn(:left)
+    when :right then @robot.turn(:right)
     when :report then report_position
     end
   end

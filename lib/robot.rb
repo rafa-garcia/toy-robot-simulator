@@ -42,25 +42,16 @@ class Robot
     @x, @y = new_position if new_position
   end
 
-  def left
+  def turn(direction)
     return unless placed?
 
-    turn(-1)
-  end
-
-  def right
-    return unless placed?
-
-    turn(1)
+    offset = { left: -1, right: 1 }[direction]
+    @direction = DIRECTIONS.rotate(offset)[current_direction_index]
   end
 
   private
 
   def current_direction_index
     DIRECTIONS.index(@direction)
-  end
-
-  def turn(offset)
-    @direction = DIRECTIONS.rotate(offset)[current_direction_index]
   end
 end
