@@ -28,4 +28,15 @@ class Robot
 
     "#{@x},#{@y},#{@direction}"
   end
+
+  def move
+    return unless placed?
+
+    case @direction
+    when 'NORTH' then @y += 1
+    when 'SOUTH' then @y -= 1
+    when 'EAST'  then @x += 1
+    when 'WEST'  then @x -= 1
+    end
+  end
 end

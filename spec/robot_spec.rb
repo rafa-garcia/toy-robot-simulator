@@ -44,4 +44,40 @@ RSpec.describe Robot do
       expect(robot.report).to eq('3,4,SOUTH')
     end
   end
+
+  describe '#move' do
+    it 'ignores move when not placed' do
+      expect { robot.move }.not_to(change { [robot.x, robot.y] })
+    end
+
+    context 'when placed' do
+      it 'moves north when facing north' do
+        robot.place(2, 2, 'NORTH')
+        robot.move
+        expect(robot.y).to eq(3)
+        expect(robot.x).to eq(2)
+      end
+
+      it 'moves south when facing south' do
+        robot.place(2, 2, 'SOUTH')
+        robot.move
+        expect(robot.y).to eq(1)
+        expect(robot.x).to eq(2)
+      end
+
+      it 'moves east when facing east' do
+        robot.place(2, 2, 'EAST')
+        robot.move
+        expect(robot.x).to eq(3)
+        expect(robot.y).to eq(2)
+      end
+
+      it 'moves west when facing west' do
+        robot.place(2, 2, 'WEST')
+        robot.move
+        expect(robot.x).to eq(1)
+        expect(robot.y).to eq(2)
+      end
+    end
+  end
 end
