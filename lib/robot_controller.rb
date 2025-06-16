@@ -13,7 +13,7 @@ class RobotController
     when :move then move_robot
     when :left then @robot.turn(:left)
     when :right then @robot.turn(:right)
-    when :report then report_position
+    when :report then @robot.report
     end
   end
 
@@ -30,13 +30,8 @@ class RobotController
     return unless next_position
 
     next_x, next_y = next_position
-    return unless @table.valid_position?(next_x, next_y)
+    return unless @table.valid_position?(next_x, next_y) # Only move if destination is valid
 
     @robot.move
-  end
-
-  def report_position
-    result = @robot.report
-    puts result if result
   end
 end

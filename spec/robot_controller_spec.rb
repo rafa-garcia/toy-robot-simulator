@@ -74,13 +74,15 @@ RSpec.describe RobotController do
     end
 
     context 'with REPORT command' do
-      it 'outputs robot position' do
+      it 'returns robot position' do
         robot.place(2, 3, :SOUTH)
-        expect { controller.execute({ type: :report }) }.to output("2,3,SOUTH\n").to_stdout
+        result = controller.execute({ type: :report })
+        expect(result).to eq('2,3,SOUTH')
       end
 
-      it 'does nothing when robot not placed' do
-        expect { controller.execute({ type: :report }) }.not_to output.to_stdout
+      it 'returns nil when robot not placed' do
+        result = controller.execute({ type: :report })
+        expect(result).to be_nil
       end
     end
   end

@@ -2,6 +2,7 @@
 
 # Parses command strings into command objects
 class CommandParser
+  # PLACE X,Y,DIRECTION format
   PLACE_REGEX = /\APLACE\s+(\d+),(\d+),(NORTH|SOUTH|EAST|WEST)\z/i.freeze
 
   def parse(input)

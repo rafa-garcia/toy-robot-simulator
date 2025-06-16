@@ -17,7 +17,8 @@ class ToyRobotSimulator
       command = parser.parse(line.strip)
       next unless command
 
-      controller.execute(command)
+      result = controller.execute(command)
+      puts result if command[:type] == :report && result
     end
   end
 end
