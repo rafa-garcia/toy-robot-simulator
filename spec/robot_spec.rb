@@ -13,7 +13,7 @@ RSpec.describe Robot do
 
   describe '#place' do
     it 'places robot at valid position with valid direction' do
-      expect(robot.place(1, 2, :NORTH)).to be true
+      robot.place(1, 2, :NORTH)
       expect(robot.x).to eq(1)
       expect(robot.y).to eq(2)
       expect(robot.direction).to eq(:NORTH)
@@ -21,7 +21,7 @@ RSpec.describe Robot do
     end
 
     it 'rejects invalid direction' do
-      expect(robot.place(1, 2, 'INVALID')).to be false
+      robot.place(1, 2, 'INVALID')
       expect(robot).not_to be_placed
     end
 

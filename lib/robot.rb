@@ -2,27 +2,23 @@
 
 # Represents the toy robot with position and direction
 class Robot
-  DIRECTIONS = %i[NORTH EAST SOUTH WEST].freeze
+  DIRECTIONS = %i[NORTH EAST SOUTH WEST]
   # Movement deltas [x, y] for NORTH, EAST, SOUTH, WEST respectively
   POSITION_DELTAS = [[0, 1], [1, 0], [0, -1], [-1, 0]].freeze
 
   attr_reader :x, :y, :direction
 
-  def initialize
-    @placed = false
-  end
-
   def place(x_pos, y_pos, direction)
-    return false unless DIRECTIONS.include?(direction)
+    return if x_pos.nil? || y_pos.nil?
+    return unless DIRECTIONS.include?(direction)
 
     @x = x_pos
     @y = y_pos
     @direction = direction
-    @placed = true
   end
 
   def placed?
-    @placed
+    !!@direction
   end
 
   def report
